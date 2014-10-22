@@ -51,4 +51,13 @@ public class Boid : MonoBehaviour
 			_steeringManager.Seek(_targetTrans.position);
 		}
 	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.black;
+		if(rigidbody.velocity.sqrMagnitude > 1e-1f)
+		{
+			Gizmos.DrawLine(transform.position, transform.position + transform.forward * 3f);
+		}
+	}
 }

@@ -49,6 +49,7 @@
      <Compile Include="Assets\Boid.cs" />
      <Compile Include="Assets\BoidForces.cs" />
      <Compile Include="Assets\BoidSquad.cs" />
+     <Compile Include="Assets\ObstacleAvoidance.cs" />
      <Compile Include="Assets\SteeringManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

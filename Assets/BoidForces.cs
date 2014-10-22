@@ -6,17 +6,14 @@ public class BoidForces
 {
 	[SerializeField]
 	float _repulsionDistance = 5f;
-	float _repulsionDistanceSQ ;
 	List<Boid> _repulsionList = new List<Boid>();
 
 	[SerializeField]
 	float _alignementDistance = 25f;
-	float _alignementDistanceSQ;
 	List<Boid> _alignementList = new List<Boid>();
 
 	[SerializeField]
 	float _attractionDistance = 600f;
-	float _attractionDistanceSQ;
 	List<Boid> _attractionList = new List<Boid>();
 
 	Vector3 _separationForce;
@@ -26,15 +23,18 @@ public class BoidForces
 	public Vector3 AlignmentForce { get { return _alignmentForce; } }
 	public Vector3 AttractionForce { get { return _attractionForce; } }
 
+	float _separationMagnitude;
+	float _alignmentMagnitude;
+	float _attractionMagnitude;
+	public float SeparationMagnitude { get { return _separationMagnitude; } }
+	public float AlignmentMagnitude { get { return _alignmentMagnitude; } }
+	public float AttractionMagnitude { get { return _attractionMagnitude; } }
+
 	Boid _boid;
 
 	public void Init(Boid boid)
 	{
 		_boid = boid;
-
-		_repulsionDistanceSQ = _repulsionDistance * _repulsionDistance;
-		_alignementDistanceSQ = _alignementDistance * _alignementDistance;
-		_attractionDistanceSQ = _attractionDistance * _attractionDistance;
 	}
 
 	public void UpdateForces()
@@ -55,36 +55,47 @@ public class BoidForces
 				continue;
 			}
 
-			float distanceSQ = (boid.transform.position - position).sqrMagnitude;
+			float distanceSQ = (boid.transform.position - position).magnitude;
 
-			if(distanceSQ <= _repulsionDistanceSQ)
+			if(distanceSQ <= _repulsionDistance)
 			{
 				_repulsionList.Add(boid);
 			}
-			//else
-				if(distanceSQ <= _alignementDistanceSQ)
+			else
+				if(distanceSQ <= _alignementDistance)
 			{
 				_alignementList.Add(boid);
 			}
-			//else
-				if(distanceSQ <= _attractionDistanceSQ)
+			else
+				if(distanceSQ <= _attractionDistance)
 			{
 				_attractionList.Add(boid);
 			}
 		}
 
 		_separationForce = Vector3.zero;
+		_separationMagnitude = 0f;
+
 		_alignmentForce = Vector3.zero;
+		_alignmentMagnitude = 0f;
+
 		_attractionForce = Vector3.zero;
+		_attractionMagnitude = 0f;
 
 		bool isOk = Separation(out _separationForce);
+		_separationMagnitude = _separationForce.magnitude;
+		_separationForce.Normalize();
 		if(!isOk)
 		{
 			isOk = Alignment(out _alignmentForce);
+			_alignmentMagnitude = _alignmentForce.magnitude;
+			_alignmentForce.Normalize();
 		}
 		if(!isOk)
 		{
 			isOk = Attraction(out _attractionForce);
+			_attractionMagnitude = _attractionForce.magnitude;
+			_attractionForce.Normalize();
         }
 	}
 
@@ -131,7 +142,6 @@ public class BoidForces
 		
 		avgVelocity /= (float)_alignementList.Count;
 		force = avgVelocity - _boid.transform.rigidbody.velocity;
-
 		return true;
 	}
 
