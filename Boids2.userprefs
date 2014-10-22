@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SteeringManager.cs">
+    <Files>
+      <File FileName="Assets\BoidForces.cs" Line="5" Column="24" />
+      <File FileName="Assets\Boid.cs" Line="50" Column="22" />
+      <File FileName="Assets\BoidSquad.cs" Line="6" Column="29" />
+      <File FileName="Assets\SteeringManager.cs" Line="9" Column="2" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
