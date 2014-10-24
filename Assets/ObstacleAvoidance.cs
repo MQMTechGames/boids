@@ -12,6 +12,9 @@ public class ObstacleAvoidance
 	Vector3 _steeringForce;
 	public Vector3 SteeringForce { get { return _steeringForce; } }
 
+	Vector3 debugPos;
+	float debugRadius = -1;
+
 	public void Init(Boid boid)
 	{
 		_boid = boid;
@@ -30,6 +33,10 @@ public class ObstacleAvoidance
 		{
 			float radius = hit.collider.bounds.size.x;
 			radius = radius < hit.collider.bounds.size.z ? hit.collider.bounds.size.z : radius;
+			radius *= 0.5f;
+
+			debugRadius = radius;
+			debugPos = hit.collider.transform.position;
 
 			Vector3 obstacleAvoidanceForce = (hit.point - hit.collider.transform.position).normalized * radius;
 			_steeringForce = obstacleAvoidanceForce - _boid.rigidbody.velocity;
@@ -37,7 +44,7 @@ public class ObstacleAvoidance
 		}
 	}
 
-	void OnDrawGizmosSelected()
+	public void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 
@@ -45,5 +52,7 @@ public class ObstacleAvoidance
 		Vector3 rayDir = _boid.rigidbody.velocity.normalized * _rayLength;
 
 		Gizmos.DrawLine(position, position + rayDir);
+
+		Gizmos.DrawSphere(debugPos, debugRadius);
 	}
 }

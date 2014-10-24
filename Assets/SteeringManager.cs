@@ -34,6 +34,9 @@ public class SteeringManager : MonoBehaviour
 	[SerializeField]
 	float _rotationSpeed = 1f;
 
+	[SerializeField]
+	float _arrivalRadius = 10f;
+
 	void Awake()
 	{
 		Boid boid = GetComponent<Boid>();
@@ -82,7 +85,6 @@ public class SteeringManager : MonoBehaviour
 			Quaternion quat = Quaternion.LookRotation(rigidbody.velocity);
 			quat = Quaternion.Slerp(transform.rotation, quat, Time.deltaTime * _rotationSpeed );
 			transform.rotation = quat;
-//			transform.LookAt(transform.position + rigidbody.velocity);
 		}
 	}
 
@@ -90,9 +92,23 @@ public class SteeringManager : MonoBehaviour
 	{
 		Vector3 desiredVelocity = _target - transform.position;
 		Vector3 velocityDir = rigidbody.velocity;
+
+		if(_arrivalRadius > 0f)
+		{
+			float distanceToTarget = desiredVelocity.magnitude;
+			if(distanceToTarget < _arrivalRadius)
+			{
+				desiredVelocity = desiredVelocity * (distanceToTarget / _arrivalRadius);
+			}
+		}
 		
 		steeringForce = desiredVelocity - velocityDir;
 		steeringMagnitude = steeringForce.magnitude;
 		steeringForce.Normalize();
+	}
+
+	void OnDrawGizmosSelected()
+	{
+		_obstacleAvoidance.OnDrawGizmosSelected();
 	}
 }
